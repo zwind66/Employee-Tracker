@@ -5,9 +5,7 @@
 
 ### Github url : <https://github.com/zwind66/Employee-Tracker.git>
 
-### link to the video : [Screencastify]()
-
-### 
+### link to the video : [Screencastify](https://drive.google.com/file/d/1zLYWt0rp3uXEzOoDGIrv8UMIZ1QpPhdd/view)
 
 ## Description
 
@@ -54,7 +52,7 @@ The user should clone the repository from GitHub and download Node. This applica
 
 `node server.js` or `npm start`
 
-* To see more details: [Screencastify]()
+* To see more details: [Screencastify](https://drive.google.com/file/d/1zLYWt0rp3uXEzOoDGIrv8UMIZ1QpPhdd/view)
 
 
 ## License

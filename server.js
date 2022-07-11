@@ -94,8 +94,10 @@ const promptUser = () => {
 const viewDepartments = () => {
     db.query('SELECT department.id AS department_id, department.name AS department FROM department', (err, res) => {
         if (err) throw err;
+        console.log('===========================================================');
         console.log('');
         console.table(res);
+        console.log('===========================================================');
         promptUser();
     });
 }
@@ -104,8 +106,10 @@ const viewDepartments = () => {
 const viewRoles = () => {
     db.query('SELECT role.*, department.name AS department_name FROM role LEFT JOIN department ON role.department_id = department.id', (err, res) => {
         if (err) throw err;
+        console.log('===========================================================');
         console.log('');
         console.table(res);
+        console.log('===========================================================');
         promptUser();
     });
 }
@@ -114,8 +118,10 @@ const viewRoles = () => {
 const viewEmployees = () => {
     db.query('SELECT employee.*, role.title, role.salary, department.name AS department_name FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id', (err, res) => {
         if (err) throw err;
+        console.log('===========================================================');
         console.log('');
         console.table(res);
+        console.log('===========================================================');
         promptUser();
     });
 }
@@ -137,10 +143,14 @@ const addDepartment = () => {
                 message: 'What is the name of the department you would like to add?',
                 validate: input => {
                     if (input === '') {
+                        console.log('===========================================================');
                         console.log('\n Please enter a department name.');
+                        console.log('===========================================================');
                         return false;
                     } else if (departments.includes(input)) {
+                        console.log('===========================================================');
                         console.log('\n That department already exists.');
+                        console.log('===========================================================');
                         return false;
                     } else {
                         return true;
@@ -153,9 +163,10 @@ const addDepartment = () => {
             }, (err, res) => {
                 if (err) throw err;
                 console.log('');
+                console.log('===========================================================');
                 console.log(`${answers.name} department added!`);
+                console.log('===========================================================');
                 viewDepartments();
-                promptUser();
             });
         });
     });
@@ -167,10 +178,12 @@ const addRole = () => {
         {
             type: 'input',
             name: 'role',
-            message: "What role do you want to add?",
+            message: 'What role do you want to add?',
             validate: addRole => {
                 if (addRole === '') {
+                    console.log('===========================================================');
                     console.log('\n Please enter a role.');
+                    console.log('===========================================================');
                     return false;
                 } else {
                     return true;
@@ -180,12 +193,17 @@ const addRole = () => {
         {
             type: 'input',
             name: 'salary',
-            message: "What is the salary of this role?",
+            message: 'What is the salary of this role?',
             validate: addSalary => {
                 if (isNaN(addSalary)) {
-                    return 'Please enter a number.';
+                    console.log('===========================================================');
+                    console.log('\n Please enter a number.');
+                    console.log('===========================================================');
+                    return false;
                 } else if (addSalary === '') {
+                    console.log('===========================================================');
                     console.log('\n Please enter a salary.');
+                    console.log('===========================================================');
                     return false;
                 } else {
                     return true;
@@ -219,10 +237,11 @@ const addRole = () => {
 
                 db.query(sql, params, (err, result) => {
                     if (err) throw err;
+                    console.log('===========================================================');
                     console.log('Added' + answer.role + " to roles!");
+                    console.log('===========================================================');
 
                     viewRoles();
-                    promptUser();
                 });
             });
         });
@@ -238,7 +257,9 @@ const addEmployee = () => {
             message: "What is the employee's first name?",
             validate: firstName => {
                 if (firstName === '') {
+                    console.log('===========================================================');
                     console.log('\n Please enter a first name.');
+                    console.log('===========================================================');
                     return false;
                 } else {
                     return true;
@@ -251,7 +272,9 @@ const addEmployee = () => {
             message: "What is the employee's last name?",
             validate: lastName => {
                 if (lastName === '') {
+                    console.log('===========================================================');
                     console.log('\n Please enter a last name. \n');
+                    console.log('===========================================================');
                     return false;
                 } else {
                     return true;
@@ -304,10 +327,11 @@ const addEmployee = () => {
 
                         db.query(sql, params, (err, result) => {
                             if (err) throw err;
+                            console.log('===========================================================');
                             console.log('\n Added' + answers.first_name + " " + answers.last_name + " to employees! \n");
+                            console.log('===========================================================');
 
                             viewEmployees();
-                            promptUser();
                         });
                     });
                 });
@@ -358,10 +382,11 @@ const updateEmployeeRole = () => {
 
                     db.query(sql, [role, employee], (err, result) => {
                         if (err) throw err;
+                        console.log('===========================================================');
                         console.log('\n Updated employee role! \n');
+                        console.log('===========================================================');
 
                         viewEmployees();
-                        promptUser();
                     });
                 });
             });
@@ -411,10 +436,11 @@ const updateEmployeeManager = () => {
 
                     db.query(sql, [manager, employee], (err, result) => {
                         if (err) throw err;
+                        console.log('===========================================================');
                         console.log('\n Updated employee manager! \n');
+                        console.log('===========================================================');
 
                         viewEmployees();
-                        promptUser();
                     });
                 });
             });
@@ -449,10 +475,14 @@ const viewEmployeeByManager = () => {
 
                 const employees = data.map(({ id, first_name, last_name }) => ({ name: `${first_name} ${last_name}`, value: id }));
                 if (employees.length === 0) {
+                    console.log('===========================================================');
                     console.log('\n This is not a manager! \n');
+                    console.log('===========================================================');
                     promptUser();
                 } else {
+                    console.log('===========================================================');
                     console.log('\n they are: ' + employees.map(({ name }) => name).join(', ') + '\n');
+                    console.log('===========================================================');
 
                     promptUser();
                 }
@@ -481,17 +511,20 @@ const viewEmployeesByDepartment = () => {
         ]).then(departmentChoice => {
             const department = departmentChoice.department;
 
-            const sql = `SELECT * FROM employee WHERE department_id = ?`;
-
+            const sql = `SELECT * FROM employee JOIN role ON employee.role_id = role.id WHERE role.department_id = ?`;
             db.query(sql, [department], (err, data) => {
                 if (err) throw err;
 
                 const employees = data.map(({ id, first_name, last_name }) => ({ name: `${first_name} ${last_name}`, value: id }));
                 if (employees.length === 0) {
-                    console.log('\n there are no employees in this department! \n');
+                    console.log('===========================================================');
+                    console.log('\n This is an empty department! \n');
+                    console.log('===========================================================');
                     promptUser();
                 } else {
-                    console.log('\n' + 'they are: ' + employees.map(({ name }) => name).join(', ') + '\n');
+                    console.log('===========================================================');
+                    console.log('\n they are: ' + employees.map(({ name }) => name).join(', ') + '\n');
+                    console.log('===========================================================');
 
                     promptUser();
                 }
@@ -524,10 +557,11 @@ const removeDepartment = () => {
 
             db.query(sql, [department], (err, result) => {
                 if (err) throw err;
+                console.log('===========================================================');
                 console.log('\n Removed department! \n');
+                console.log('===========================================================');
 
                 viewDepartments();
-                promptUser();
             });
         });
     });
@@ -557,10 +591,11 @@ const removeRole = () => {
 
             db.query(sql, [role], (err, result) => {
                 if (err) throw err;
+                console.log('===========================================================');
                 console.log('\n Removed role! \n');
+                console.log('===========================================================');
 
                 viewRoles();
-                promptUser();
             });
         });
     });
@@ -590,10 +625,11 @@ const removeEmployee = () => {
 
             db.query(sql, [employee], (err, result) => {
                 if (err) throw err;
+                console.log('===========================================================');
                 console.log('\n Removed employee! \n');
+                console.log('===========================================================');
 
                 viewEmployees();
-                promptUser();
             });
         });
     });
@@ -611,7 +647,9 @@ const viewDepartmentBudget = () => {
 
     db.query(sql, (err, rows) => {
         if (err) throw err;
+        console.log('===========================================================');
         console.table(rows);
+        console.log('===========================================================');
 
         promptUser();
     });
